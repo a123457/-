@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//基类方法
+			function Animal(age, name, sound) {
+				this.name = name;
+				this.age = age;
+				this.sound = sound
+			}
+			//基类sing 方法定义在Animal 原型上
+			Animal.prototype.sing = function() {
+				console.log(this.name + "         "+this.sound)
+			}
+			function Maod(age, name, sound) { //子类函数
+				// Animal(age, name) //直接函数调用 内部 this 指针指向window
+				Animal.apply(this, [age, name, sound]) //Animal 内部的this指针指向了 Maod 也就是说 Maod 调用了Animal的函数方法
+			}
+			// Md要继承Animal 原型的 方法
+			function inhertPrototype(o) { // 形参 o 是一个 对象
+				var F = function () {}; // 新建一个空函数
+				F.prototype = o ;       // F的原型指向了o对象  F.prototype.constructor = ƒ Object() {} 
+				F.prototype.constructor = Maod // 修改F原型上的 constructor 使其指向 Maod
+				return new F()
+			}
+			Maod.prototype = inhertPrototype(Animal.prototype)
+			a = new Maod(18, 'xzy', '哈哈')
+			a1 = new Maod(19, 'md', '啦啦')
+			console.log(a.sing())
+			console.log(a1.sing())
+		</script> 
+	</body>
+</html>
